@@ -17,7 +17,7 @@ class Fetch {
   // https://zenn.dev/kato_shinya/articles/how-to-handle-multiple-set-cookie-with-dart
   final _regexSplitSetCookies = RegExp(',(?=[^ ])');
 
-  final List<Cookie> cookies = [];
+  List<Cookie> cookies = [];
   final cookieManager = CookieManager();
 
   Future<void> fetchCookiesFromDevice() async {
@@ -46,8 +46,13 @@ class Fetch {
   }
 
   void _setSetCookies(List<String> cookieValues) {
-    for (final cookie in cookieValues) {
-      cookies.add(Cookie.fromSetCookieValue(cookie));
+    final setCookies =
+        cookieValues.map((e) => Cookie.fromSetCookieValue(e)).toList();
+    cookies.removeWhere(
+        (element) => setCookies.map((e) => e.name).contains(element.name));
+        
+    for (final setCookie in setCookies) {
+      cookies.add(setCookie);
     }
   }
 

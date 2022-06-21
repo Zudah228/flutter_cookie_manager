@@ -20,7 +20,9 @@ class MyHomePage extends HookConsumerWidget {
         onPressed: () async {
           final res = await fetch.getRequest('https://www.baidu.com');
           body.value = res.body;
-          print(fetch.cookies.first.name);
+          for (final cookie in fetch.cookies) {
+            print('${cookie.name}=${cookie.value}');
+          }
         },
         child: const Text('Fetch'),
       ),
