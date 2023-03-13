@@ -8,7 +8,9 @@ import 'presentation/pages/my_home_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   late SharedPreferences prefs;
+
   prefs = await SharedPreferences.getInstance();
+
   runApp(ProviderScope(overrides: [
     sharedPreferencesRepositoryProvider
         .overrideWithValue(SharedPreferencesRepository(prefs)),

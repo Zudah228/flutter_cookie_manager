@@ -9,8 +9,15 @@ class MyHomePage extends HookConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fetch = ref.read(fetchProvider);
+    final fetch = ref.watch(fetchProvider);
     final body = useState('');
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        fetch.setCookiesFromDevice();
+      });
+      return null;
+    }, const []);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,7 +25,7 @@ class MyHomePage extends HookConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final res = await fetch.getRequest('https://www.baidu.com');
+          final res = await fetch.get('www.baidu.com');
           body.value = res.body;
           for (final cookie in fetch.cookies) {
             print('${cookie.name}=${cookie.value}');
